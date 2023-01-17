@@ -5,11 +5,6 @@ const {Router} = require ('express');
 const router = Router();
 
 const API = `https://api.thedogapi.com/v1/breeds?${API_KEY}`;
-
-const ariana = 'Arianita'
-const hola = `hola ${ariana}`
-console.log(hola)
-
 // router.get('/', async(req,res,next)=>{
   
 //    const dogs = await axios.get(API);
@@ -30,13 +25,11 @@ console.log(hola)
 // |_________________|_____________________|
 //${landinpage}
 
-const contenedorParaPerrosAPI = async()=>{ //Lo que quiero hacer en esta funcion es llamar a los perros de la API;
-  
-  try{
-    const contenedorApi = await axios.get(API);
-    const contenedorInfo = await contenedorApi.data.map(perro=>{
+     const contenedorParaPerrosAPI = async()=>{ //Lo que quiero hacer en esta funcion es llamar a los perros de la API;
+     try{
+     const contenedorApi = await axios.get(API);
+     const contenedorInfo = await contenedorApi.data.map(perro=>{
      let temperamento = [];
-     
      perro.temperament?temperamento=perro.temperament.split(','):temperamento='no se ha encontrado un temperamento';
      //if(perro.temperament) temperamento = perro.temperament.split(','); //Verifico que el temperamento exista, y hago que se separe por comas en el array
      let altura = [];
@@ -53,7 +46,6 @@ const contenedorParaPerrosAPI = async()=>{ //Lo que quiero hacer en esta funcion
         life_span: perro.life_span,
         image: perro.image.url
      }});
-     console.log(contenedorInfo)
      return contenedorInfo;
   }
     catch(error){
@@ -109,6 +101,41 @@ router.get('/', async(req,res)=>{
 
     // }));//Esto va a ser un contenedor para todos mis perros.
                                    // promise.all va a ejecutar el codigo despues de que todas mis promesas se hayan cumplido.
+});
+
+router.get('/:id', async(req,res)=>{
+const {id} = req.params;
+const datosAPI = await contenedorParaPerrosAPI();//Tomo los datos de la api
+const datosDB = await contenedorParaPerrosDB(); // TOMO LOS DATOS DE LA BASE DE DATOS
+const combinar = [...datosAPI, ...datosDB]; //LOS UNO NUEVAMENTE
+const findDog = combinar.filter(a=>a.id == id);//VERIFICO QUE EXISTE CON UN FILTER
+findDog.length?res.send(findDog):res.send('Not found')//Si encuentro alguno lo mando como respuesta, sino aviso de que no existe.
+})
+
+router.post('/', async(req,res)=>{
+const {name, max_weight, min_weight, max_height, min_height, life_span, temperamentos, image} = req.body;
+
+const weight = [min_weight,max_weight];
+const height = [min_height,max_height];
+console.log(height)
+let create = await Dog.create({
+    name,
+    height:height,
+    weight:weight,
+    life_span,
+    temperamentos,
+    image
+})//Los datos los recibe atravez de un array;
+console.log(temperamentos)
+const relacion = await Temperaments.findAll({
+    where:{
+        name:temperamentos
+    }
+})
+ console.log(relacion);
+ create.addTemperaments(relacion)
+ res.send('Se ha creado exitosamente')
+
 });
 
 module.exports = router;

@@ -10,12 +10,18 @@ router.get('/', async(req,res)=>{
     const temperamentosAPI = datosApi.data.map(a=>a.temperament?a.temperament:false).filter(Boolean)//esto devuelvo un arreglo con los temperamento//Uso el filter(Boolean para detectar elementos null o falsos y asi no hacer un arreglo de ellos)
     const temperamentos = temperamentosAPI.toString().split(',');
     temperamentos.forEach(temp=>Temperaments.findOrCreate({where:{name:temp}}));
-    const allTemp=await Temperaments.findAll();
+    const allTemp = await Temperaments.findAll();
     console.log(temperamentos.data)
     res.send(allTemp)
 });
 
-
+// router.delete('/', async(req,res)=>{
+//     const {name}= req.query;
+    
+//     console.log(name);
+   
+//     const count = await Temperaments.destroy({where:{name:name}});
+// });
 
 
 

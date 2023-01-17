@@ -6,7 +6,7 @@ module.exports = (sequelize) =>{
    sequelize.define('temperaments',{
       
       id:{
-        type: DataTypes.UUID,//Uso un uuid Para que los ids no colision
+        type: DataTypes.UUID,//Uso un uuid Para que los ids no colisionen
         defaultValue: DataTypes.UUIDV4,//Uso un id para que los ids no hagan colision
         allowNull:false,
         primaryKey:true
@@ -14,7 +14,8 @@ module.exports = (sequelize) =>{
 
       name:{
         type: DataTypes.STRING,
-        allowNull:true
+        allowNull:false
+
       }
 
 

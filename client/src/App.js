@@ -1,9 +1,10 @@
 import './App.css';
-
+import Home from './components/Home';
+import { Switch, Route } from 'react-router-dom';
 function App() {
   return (
     <div className="App">
-      <h1>Henry Dogs</h1>
+      <Route path="/home" component={Home}/> 
     </div>
   );
 }
