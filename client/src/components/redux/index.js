@@ -1,6 +1,8 @@
 const GET_BREED = "GET_BREED";
-
-
+const SEARCH_DOG = 'SEARCH_DOG';
+const DOG_DETAIL = 'DOG_DETAIL'
 export {
-    GET_BREED
+    GET_BREED,
+    SEARCH_DOG,
+    DOG_DETAIL
 }

@@ -32,10 +32,10 @@ const API = `https://api.thedogapi.com/v1/breeds?${API_KEY}`;
      let temperamento = [];
      perro.temperament?temperamento=perro.temperament.split(','):temperamento='no se ha encontrado un temperamento';
      //if(perro.temperament) temperamento = perro.temperament.split(','); //Verifico que el temperamento exista, y hago que se separe por comas en el array
-     let altura = [];
-     if(perro.height.metric) altura = perro.height.metric.split('-');//Quito los guiones para que se separe en 2 elementos la altura
+     let altura = []; // 50 - 60
+     if(perro.height.metric) altura = perro.height.metric.replace(/ /g,'').split('-');//Quito los guiones para que se separe en 2 elementos la altura
      let peso = [];
-     if(perro.weight.metric) peso = perro.weight.metric.split('-'); //Hago exactamente lo mismo que con la altura.
+     if(perro.weight.metric) peso = perro.weight.metric.replace(/ /g,'').split('-'); //Hago exactamente lo mismo que con la altura.
      //retorno un objeto con las cosas recolectadas en el Contenedor de la INFO;
      return{
         id: perro.id,
@@ -83,11 +83,11 @@ router.get('/', async(req,res)=>{
     const{name}= req.query;
                                          //toLowerCasePara no tener problemas con las mayusculas
     if(name) {const perroBuscado = combinar.filter(a=>a.name.toLowerCase().includes(name.toLowerCase()))//<---
-    perroBuscado.length?res.send(perroBuscado): res.send('404 Not Found')                                     //   |
+    perroBuscado.length?res.send(perroBuscado): res.send('error')                               //   |
                                                                                                         //   |    
-    }                                                                                           //Uso todos los elementos recolectados con un filter, los paso a miniscula para no
-                                                                                                //para hacerlo case sensitive, luego uso el name del query junto con include para
-                                                                                            //verificar que no tenga ningun elemento con ese nombre
+    }                                                                                                   //Uso todos los elementos recolectados con un filter, los paso a miniscula para no
+                                                                                                        //para hacerlo case sensitive, luego uso el name del query junto con include para
+                                                                                                        //verificar que no tenga ningun elemento con ese nombre
     else res.send(combinar);
 
 
@@ -108,16 +108,23 @@ const {id} = req.params;
 const datosAPI = await contenedorParaPerrosAPI();//Tomo los datos de la api
 const datosDB = await contenedorParaPerrosDB(); // TOMO LOS DATOS DE LA BASE DE DATOS
 const combinar = [...datosAPI, ...datosDB]; //LOS UNO NUEVAMENTE
-const findDog = combinar.filter(a=>a.id == id);//VERIFICO QUE EXISTE CON UN FILTER
-findDog.length?res.send(findDog):res.send('Not found')//Si encuentro alguno lo mando como respuesta, sino aviso de que no existe.
+const findDog = combinar.filter(a=> {return a.id == id});//VERIFICO QUE EXISTE CON UN FILTER
+findDog.length?res.send(findDog):res.send('error')//Si encuentro alguno lo mando como respuesta, sino aviso de que no existe.
+console.log(findDog)
 })
+
+
+
+
+
+
+
 
 router.post('/', async(req,res)=>{
 const {name, max_weight, min_weight, max_height, min_height, life_span, temperamentos, image} = req.body;
 
 const weight = [min_weight,max_weight];
 const height = [min_height,max_height];
-console.log(height)
 let create = await Dog.create({
     name,
     height:height,
@@ -126,13 +133,11 @@ let create = await Dog.create({
     temperamentos,
     image
 })//Los datos los recibe atravez de un array;
-console.log(temperamentos)
 const relacion = await Temperaments.findAll({
     where:{
         name:temperamentos
     }
 })
- console.log(relacion);
  create.addTemperaments(relacion)
  res.send('Se ha creado exitosamente')
 

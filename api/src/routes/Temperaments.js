@@ -14,7 +14,6 @@ router.get('/', async(req,res)=>{
     const temperamentos = repetidosArray.toString().split(',');
     temperamentos.forEach(temp=>Temperaments.findOrCreate({where:{name:temp}}));
     const allTemp = await Temperaments.findAll();
-    console.log(allTemp.length)
     res.send(allTemp)
 
 });
