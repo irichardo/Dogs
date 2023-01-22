@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_BREED, SEARCH_DOG, DOG_DETAIL } from './index';
+import { GET_BREED, SEARCH_DOG, DOG_DETAIL, CREATE_DOG } from './index';
 
 export const getBreed = () =>{
     return async function(dispatch){
@@ -55,4 +55,18 @@ export const dogDetail = (id)=>{
       console.log(error)
     }
   }
+}
+
+
+export const createBreed = (create) =>{
+  return async function(){
+    try{
+      const  rest = await axios.post('http://localhost:3001/dogs',create)
+      return rest;
+    }
+    catch{
+      throw new Error();
+    }
+  }
+
 }

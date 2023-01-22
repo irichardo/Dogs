@@ -121,14 +121,15 @@ console.log(findDog)
 
 
 router.post('/', async(req,res)=>{
-const {name, max_weight, min_weight, max_height, min_height, life_span, temperamentos, image} = req.body;
-
-const weight = [min_weight,max_weight];
-const height = [min_height,max_height];
+const {name, weight, height, life_span, temperamentos, image} = req.body;
+let weight_ = weight.split('-');
+let height_ = height.split('-');
+const totalWeight = [weight_];
+const totalHeight = [height_];
 let create = await Dog.create({
     name,
-    height:height,
-    weight:weight,
+    height:totalHeight,
+    weight:totalWeight,
     life_span,
     temperamentos,
     image

@@ -12,10 +12,11 @@ console.log(id)
 const breedDetail = useSelector(state=>state.breed_detail);
 const [breed, setBreed] = useState([])
 
-const Handler = () =>{ 
+const Handler = () =>{ setBreed([])
                        dispatch(dogDetail(id))}
 
-useEffect(()=>Handler(),[id])
+useEffect(()=>
+Handler(),[id])
 
 useEffect(()=>
 setBreed(breedDetail),[breedDetail]);

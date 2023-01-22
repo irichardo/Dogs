@@ -4,6 +4,7 @@ import { getBreed, searchDog } from './redux/actions';
 import DogCard  from './DogCard';
 import { useSelector} from 'react-redux';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
   
   const Home = () =>{
@@ -11,16 +12,26 @@ import { useState } from 'react';
   const dispatch = useDispatch();
   const [breeds, setBreeds] = useState([]);
   const [value, SetValue] = useState('')
-   
-  const Handler = (name) =>{ SetValue(name);}
+  const [loader, setLoader] = useState(false)
+
+
+  const Handler = (name) =>{ 
+    SetValue(name);}
   
   useEffect(()=>{
-  dispatch(getBreed());
-  },[dispatch]);
+  setLoader(true);
+  dispatch(getBreed());//Llamo a todas las razas tanto de db como de la API
+  setLoader(false)
+},[dispatch]);
   
   useEffect(()=>{
-    dispatch(searchDog(value))
-  },[value])
+    dispatch(searchDog(value));//Hago una busqueda en tiempo real des perros
+  },[value]);
+  
+
+  useEffect(()=>{
+    SetValue([])
+  },[]);
 
   useEffect(()=>{
   setBreeds(breed);
@@ -28,9 +39,11 @@ import { useState } from 'react';
 
   return (
               <>
+              <Link to={'/createdog'}><button>CreateActivity</button></Link>
               <input onChange={e=>Handler(e.target.value)}></input>
               <div>
               {
+              loader?<><h1>Loading......</h1></>:
               breeds !== 'error'?breeds.map((breed)=>{
               return <DogCard key={breed.id}
               id={breed.id}
@@ -39,7 +52,11 @@ import { useState } from 'react';
               weight={breed.weight}
               image={breed.image}
               temperament={breed.temperaments}/>
-              }):value.length>12?<><h1>{`Vaya, que nombre tan raro para un perrito.`}</h1></>:<><h1>{`¿Estas seguro de que se llama ${value}?`}</h1></>}
+              })
+              :value.length>12?<><h1>{`Vaya, que nombre tan raro para un perrito.`}</h1></>
+              :<><h1>{`¿Estas seguro de que se llama ${value}?`}</h1></>
+              
+              }
               </div>
     </>
     
