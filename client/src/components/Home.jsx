@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import {connect, useDispatch} from 'react-redux';
-import { getBreed, searchDog } from './redux/actions';
+import {useDispatch} from 'react-redux';
+import { getBreed, searchDog, sortByName, sortByWeight } from './redux/actions';
 import DogCard  from './DogCard';
 import { useSelector} from 'react-redux';
 import { useState } from 'react';
@@ -8,42 +8,51 @@ import { Link } from 'react-router-dom';
 
   
   const Home = () =>{
-  const breed = useSelector(state=>state.breed);
   const dispatch = useDispatch();
+  const breed = useSelector(state=>state.breed);
   const [breeds, setBreeds] = useState([]);
-  const [value, SetValue] = useState('')
-  const [loader, setLoader] = useState(false)
+  const [value, SetValue] = useState('');
+  const [render, setRender] = useState(1);
 
 
-  const Handler = (name) =>{ 
-    SetValue(name);}
+    const Handler = (name) =>{ 
+    SetValue(name);
+    }
   
-  useEffect(()=>{
-  setLoader(true);
-  dispatch(getBreed());//Llamo a todas las razas tanto de db como de la API
-  setLoader(false)
-},[dispatch]);
-  
-  useEffect(()=>{
-    dispatch(searchDog(value));//Hago una busqueda en tiempo real des perros
-  },[value]);
-  
+    const handlerFilter = (e) =>{
+    e.preventDefault();
+    dispatch(sortByName(e.target.value));
+    setRender(render+1)
+    }
 
-  useEffect(()=>{
-    SetValue([])
-  },[]);
+    const handlerWeight = (e) =>{
+      e.preventDefault();
+      dispatch(sortByWeight(e.target.value));
+      setRender(render+1)
+    }
 
-  useEffect(()=>{
-  setBreeds(breed);
-  },[breed]);
+    useEffect(() => {
+      dispatch(getBreed());
+    }, [dispatch]);
+  
+    useEffect(() => {
+      dispatch(searchDog(value));
+    }, [dispatch, value]);
+  
+    useEffect(() => {
+      setBreeds(breed);
+    }, [breed]);
+
 
   return (
               <>
               <Link to={'/createdog'}><button>CreateActivity</button></Link>
               <input onChange={e=>Handler(e.target.value)}></input>
+              <button value={'Z-A'} onClick={handlerFilter}>Z-A</button>
+              <button value={'A-Z'} onClick={handlerFilter}>A-Z</button>
+              <button value={'Max-Min'} onClick={handlerWeight}>Max-min</button>
               <div>
               {
-              loader?<><h1>Loading......</h1></>:
               breeds !== 'error'?breeds.map((breed)=>{
               return <DogCard key={breed.id}
               id={breed.id}

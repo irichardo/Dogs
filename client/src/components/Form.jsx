@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDebugValue } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,26 +11,25 @@ const Form =() =>{
 
 
 const[validator, setValitador] = useState(false);
-
+const[url,setURL] = useState({image:''})
 const[form, setForm] = useState({
     name:'',
     height: '',
     weight:'',
     life_span:'',
-    temperamentos:[]
+    temperamentos:'',
+    image:''
 })
-
-console.log(form)
 
 const handlerWeight = (event) => {
     let value = event.target.value;
     let validator = /^\d+$/;
-    console.log(value);
-    if(validator.test(value.split('-').join('')) || value.length == 0){
+    if(validator.test(value.split('-').join('')) || value.length == 0 || value < 6 && value.filter(a=> a == '-').length > 1){
     if(value.length === 6) return false;
     else if(value.length == 2){
     value = value + '-'
     }
+
     else if(value.length <= 3){
        value = value.replace('-', '')
       }
@@ -41,23 +41,44 @@ const handlerWeight = (event) => {
 const handlerHeight = (event) => {
   let value = event.target.value;
   let validator = /^\d+$/;
-  if(validator.test(value.split('-').join('')) || value.length == 0){
-  if(value.length === 6) return false;
-  else if(value.length == 2){
-  value = value + '-'
-  }
-  else if(value.length <= 3){
-     value = value.replace('-', '')
-    }
+  let cortado1 = value.slice(0,2);
+  let cortado3 = value.slice(3,5);
+  let cortado2 = value.slice(2,3)?value.slice(2,3).replace(validator,'-'):'';
+  let valorFinal = ''
   
-  setForm({...form,[event.target.name]:value})
+  if(cortado1.split(' ') !== '-' && cortado3.split(' ') !== '-')
+  if(validator.test(cortado1)) valorFinal=cortado1;
+  valorFinal += cortado2
+  if(validator.test(cortado3)) valorFinal +=cortado3;
+  // if(valorFinal.length <= 6) cortado2.replace(' - ', '')
+  // if(validator.test(cortado3)) valorFinal+= cortado3;
+
+
+
+   /* let verificadorDeGuiones = separador.find(a=>a == '-');
+   if(validator.test(value.split('-').join('')) || value.length == 0){
+   if(verificadorDeGuiones && value[2] !== '-') return false
+   if(value.length === 6) return false;
+   else if( value.length == 2){
+     separador.push('-')// Por algun motivo no me leia el length al poner el guion asi que decidi usar un push con un split;
+     value = separador.join('')//con esto lo vuelvo palabra de nuevo
+     console.log(value.length)
+   }
+ else if(value.length == 3 && separador[2] !== '-'){//Esto es el validador en caso quiera borrar y desaparezca el guion para no ignorar el validador del guion;
+  //   //separador[2] = '-';
+     separador.splice(2,1,'-')
+     value = separador.join('');
+   }
+  else if(value.length == 3 && value[value.length-1] =='-'){
+    value = value.replace('-', '');
   }
+} */
+setForm({...form,[event.target.name]:valorFinal})
 }
 
 
 const handlerName = (event) =>{
   let value = event.target.value;
-  console.log(value);
   let validator = /^[a-zA-Z\s]{1,20}$/;
   if(validator.test(value) || value.length == 0){
   setForm({...form,[event.target.name]:value})
@@ -83,7 +104,35 @@ const handlerLife_Span = (event) =>{
 
 }
 
+const handlerTemperament = (event) =>{
+  let value = event.target.value;
+  let validator = /^[a-zA-Z\s]{1,20}$/;
+  if(validator.test(value) || value.length == 0){
+  setForm({...form,[event.target.name]:value})
+  }
+}
 
+console.log(form)
+console.log(url.image)
+const handlerImageURL = (event)=>{
+ let value = event.target.value
+
+
+
+
+
+ setURL({...url,[event.target.name]:value})
+
+ 
+
+}
+
+const dataValidator = (form.name !=='' && form.height !== '' && form.weight !== '' && form.life_span !== '' && form.temperamentos !== '')?true:false;
+
+
+
+console.log(form)
+console.log(dataValidator)
 //el name del input hace que el handler pueda reconocer el objetico con el que se esta trabajando,
 //NO OLVIDAR
 
@@ -137,9 +186,9 @@ return (<>
   <label>
     ¿Cual es su temperamento?
     <input type="text"
-            name="max_weight"
-            onChange={(e)=>{}}
-            value={form.max_weight}/>
+            name="temperamentos"
+            onChange={(e)=>{handlerTemperament(e)}}
+            value={form.temperamentos}/>
   </label> <br/>
 
 
@@ -150,9 +199,9 @@ return (<>
     Agrega una URL con la imagen de tu perro:
    
     <input type="text"
-            name="max_weight"
-            onChange={(e)=>{}}
-            value={form.max_weight}/>
+            name="image"
+            onChange={(e)=>{handlerImageURL(e)}}
+            value={url.image}/>
 
   </label>
 

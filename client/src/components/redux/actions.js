@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_BREED, SEARCH_DOG, DOG_DETAIL, CREATE_DOG } from './index';
+import { GET_BREED, SEARCH_DOG, DOG_DETAIL, SORT_BY_NAME, SORT_BY_WEIGHT } from './index';
 
 export const getBreed = () =>{
     return async function(dispatch){
@@ -67,6 +67,23 @@ export const createBreed = (create) =>{
     catch{
       throw new Error();
     }
+  }
+}
+
+
+export const sortByName = (order) =>{
+  return{
+    type: SORT_BY_NAME,
+    payload: order
+  }
+
+
+}
+
+export const sortByWeight = (order)=>{
+  return{
+    type: SORT_BY_WEIGHT,
+    payload:order
   }
 
 }
