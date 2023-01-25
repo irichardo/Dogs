@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_BREED, SEARCH_DOG, DOG_DETAIL, SORT_BY_NAME, SORT_BY_WEIGHT } from './index';
+import { GET_BREED, SEARCH_DOG, DOG_DETAIL, SORT_BY_NAME, SORT_BY_WEIGHT, GET_TEMPERAMENTS, GET_FILTER_BY_TEMPS } from './index';
 
 export const getBreed = () =>{
     return async function(dispatch){
@@ -40,7 +40,6 @@ export const dogDetail = (id)=>{
   return async function(dispatch){
     try{
       const res = await axios(`http://localhost:3001/dogs/${id}`)
-      console.log(res.data[0])
       if(res.data[0]){
         return dispatch({
           type: DOG_DETAIL,
@@ -48,7 +47,7 @@ export const dogDetail = (id)=>{
         })
       }
       else{
-        throw new Error;
+        throw new Error();
       }
     }
     catch(error){
@@ -85,5 +84,31 @@ export const sortByWeight = (order)=>{
     type: SORT_BY_WEIGHT,
     payload:order
   }
+
+}
+
+export const getTemperaments = ()=>{
+return async function(dispatch){
+  try{
+   const  res = await axios('http://localhost:3001/temperaments')
+   
+   if(res){
+    return dispatch({
+      type: GET_TEMPERAMENTS,
+      payload: res.data
+    })}
+  } 
+  catch{
+    throw new Error()
+  }
+}
+}
+
+export const filterByTemps = (payload) =>{
+return{
+  type: GET_FILTER_BY_TEMPS,
+  payload
+}
+
 
 }

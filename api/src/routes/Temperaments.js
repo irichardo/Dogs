@@ -4,9 +4,9 @@ const {API_KEY} = process.env;
 const {Router} = require ('express');
 
 const router = Router();
-const API = `https://api.thedogapi.com/v1/breeds?${API_KEY}`;
-router.get('/', async(req,res)=>{
-    
+
+const getTemperaments = async() =>{
+    const API = `https://api.thedogapi.com/v1/breeds?${API_KEY}`;
     const datosApi = await axios.get(API);//Llamado a la api para que me traiga los datos ' ';
     const temperamentosAPI = datosApi.data.map(a=>a.temperament?a.temperament:false).filter(Boolean)//esto devuelvo un arreglo con los temperamento//Uso el filter(Boolean para detectar elementos null o falsos y asi no hacer un arreglo de ellos)
     let filtrarRepetidos = temperamentosAPI.toString().replace(/ /g,'').split(',');
@@ -14,7 +14,24 @@ router.get('/', async(req,res)=>{
     const temperamentos = repetidosArray.toString().split(',');
     temperamentos.forEach(temp=>Temperaments.findOrCreate({where:{name:temp}}));
     const allTemp = await Temperaments.findAll();
-    res.send(allTemp)
+    return allTemp
+}
+
+
+
+router.get('/', async(req,res)=>{
+    
+    try{
+
+        let temperamentos = await getTemperaments()
+        res.send(temperamentos)
+
+    }
+    catch{
+
+        res.send('temperamentos no encontrados')
+
+    }
 
 });
 

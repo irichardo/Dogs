@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { useDebugValue } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +9,7 @@ const Form =() =>{
 //OPCIONAL, AGREGAR UNA A , PARA LA VALIDACION;
 
 
-const[validator, setValitador] = useState(false);
+//const[validator, setValitador] = useState(false);
 const[url,setURL] = useState({image:''})
 const[form, setForm] = useState({
     name:'',
@@ -24,9 +23,9 @@ const[form, setForm] = useState({
 const handlerWeight = (event) => {
     let value = event.target.value;
     let validator = /^\d+$/;
-    if(validator.test(value.split('-').join('')) || value.length == 0 || value < 6 && value.filter(a=> a == '-').length > 1){
+    if(validator.test(value.split('-').join('')) || value.length === 0 || (value < 6 && value.filter(a=> a === '-').length > 1)){
     if(value.length === 6) return false;
-    else if(value.length == 2){
+    else if(value.length === 2){
     value = value + '-'
     }
 
@@ -80,7 +79,7 @@ setForm({...form,[event.target.name]:valorFinal})
 const handlerName = (event) =>{
   let value = event.target.value;
   let validator = /^[a-zA-Z\s]{1,20}$/;
-  if(validator.test(value) || value.length == 0){
+  if(validator.test(value) || value.length === 0){
   setForm({...form,[event.target.name]:value})
   }
 }
@@ -89,9 +88,9 @@ const handlerLife_Span = (event) =>{
   let value = event.target.value;
   let validator = /^\d+$/;
   console.log(value.replace('a',''))
-  if(validator.test(value.split('a').join('')) || value.length == 0){
+  if(validator.test(value.split('a').join('')) || value.length === 0){
   if(value.length === 9) return false;
-  else if(value.length == 2){
+  else if(value.length === 2){
   value = value + ' a '
   }
   else if(value.length <= 10){
@@ -107,7 +106,7 @@ const handlerLife_Span = (event) =>{
 const handlerTemperament = (event) =>{
   let value = event.target.value;
   let validator = /^[a-zA-Z\s]{1,20}$/;
-  if(validator.test(value) || value.length == 0){
+  if(validator.test(value) || value.length === 0){
   setForm({...form,[event.target.name]:value})
   }
 }
@@ -116,8 +115,8 @@ console.log(form)
 console.log(url.image)
 const handlerImageURL = (event)=>{
  let value = event.target.value
-
-
+ 
+ 
 
 
 

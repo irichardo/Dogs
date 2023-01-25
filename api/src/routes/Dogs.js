@@ -4,6 +4,7 @@ const {API_KEY} = process.env;
 const {Router} = require ('express');
 const router = Router();
 
+
 const API = `https://api.thedogapi.com/v1/breeds?${API_KEY}`;
 // router.get('/', async(req,res,next)=>{
   
@@ -25,12 +26,13 @@ const API = `https://api.thedogapi.com/v1/breeds?${API_KEY}`;
 // |_________________|_____________________|
 //${landinpage}
 
+
      const contenedorParaPerrosAPI = async()=>{ //Lo que quiero hacer en esta funcion es llamar a los perros de la API;
      try{
      const contenedorApi = await axios.get(API);
      const contenedorInfo = await contenedorApi.data.map(perro=>{
      let temperamento = [];
-     perro.temperament?temperamento=perro.temperament.split(','):temperamento='no se ha encontrado un temperamento';
+     perro.temperament?temperamento=perro.temperament.replace(/ /g,'').split(','):temperamento='no se ha encontrado un temperamento';
      //if(perro.temperament) temperamento = perro.temperament.split(','); //Verifico que el temperamento exista, y hago que se separe por comas en el array
      let altura = []; // 50 - 60
      if(perro.height.metric) altura = perro.height.metric.replace(/ /g,'').split('-');//Quito los guiones para que se separe en 2 elementos la altura
@@ -122,23 +124,28 @@ console.log(findDog)
 
 router.post('/', async(req,res)=>{
 const {name, weight, height, life_span, temperamentos, image} = req.body;
+console.log(weight)
+console.log(temperamentos)
 let weight_ = weight.split('-');
 let height_ = height.split('-');
-const totalWeight = [weight_];
-const totalHeight = [height_];
+console.log(weight, height)
 let create = await Dog.create({
     name,
-    height:totalHeight,
-    weight:totalWeight,
+    height:height_,
+    weight:weight_,
     life_span,
     temperamentos,
     image
 })//Los datos los recibe atravez de un array;
+temperamentos.forEach(async(temp)=> await Temperaments.findOrCreate({where:{name:temp, dbTrue:true}}))
+
+
 const relacion = await Temperaments.findAll({
     where:{
         name:temperamentos
     }
 })
+
  create.addTemperaments(relacion)
  res.send('Se ha creado exitosamente')
 
