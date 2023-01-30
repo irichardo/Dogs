@@ -33,7 +33,18 @@ router.get('/', async(req,res)=>{
 
     }
 
-});
+}
+
+
+
+
+
+
+
+
+
+
+);
 
 // router.delete('/', async(req,res)=>{
 //     const {name}= req.query;

@@ -1,15 +1,18 @@
 import axios from 'axios';
-import { GET_BREED, SEARCH_DOG, DOG_DETAIL, SORT_BY_NAME, SORT_BY_WEIGHT, GET_TEMPERAMENTS, GET_FILTER_BY_TEMPS } from './index';
+import { GET_BREED, SEARCH_DOG, DOG_DETAIL, SORT_BY_NAME, SORT_BY_WEIGHT, GET_TEMPERAMENTS, GET_FILTER_BY_TEMPS} from './index';
 
 export const getBreed = () =>{
     return async function(dispatch){
     try{
       const res = await axios('http://localhost:3001/dogs');//Llamo a la api local
+      // console.log('aaaaaaa',res.data.find(a=>a.temperaments[0].name))
       if(res){
+
       return dispatch({
             type: GET_BREED, //Nombro el tipo de action que voy a usar
             payload: res.data //Envio un payload con toda la data recogida de esa accion.
-      })}
+      
+          })}
     }
     
     catch(error){//Catch que atrapara el error y me lo mostrara en un console.log
@@ -32,7 +35,7 @@ export const searchDog = (name) =>{
   }
   catch(error){
       console.log(error)
-  }
+    }
   }
 }
 
@@ -64,7 +67,7 @@ export const createBreed = (create) =>{
       return rest;
     }
     catch{
-      throw new Error();
+      throw new Error;
     }
   }
 }
@@ -110,5 +113,5 @@ return{
   payload
 }
 
-
 }
+

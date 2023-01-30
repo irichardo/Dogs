@@ -1,216 +1,368 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTemperaments } from './redux/actions';
+const Form = () => {
+  //Falta hacer las validaciones de todo el form completo;
+  // falta hacer la validacion del objeto useState;
 
-const Form =() =>{
-//Falta hacer las validaciones de todo el form completo;
-// falta hacer la validacion del objeto useState;
+  //OPCIONAL, AGREGAR UNA A , PARA LA VALIDACION;
 
-//OPCIONAL, AGREGAR UNA A , PARA LA VALIDACION;
+  const dispatch = useDispatch();
 
 
-//const[validator, setValitador] = useState(false);
-const[url,setURL] = useState({image:''})
-const[form, setForm] = useState({
-    name:'',
+
+  let validationLifeSpan = /^\d{2}-\d{2}$/;
+  let validation = /^\d+$/;
+  let validator = /^[a-zA-Z\s]{1,20}$/;
+  const temperaments = useSelector(state => state.temperaments);
+
+
+  const [form, setForm] = useState({
+    name: '',
     height: '',
-    weight:'',
-    life_span:'',
-    temperamentos:'',
-    image:''
-})
+    weight: '',
+    life_span: '',
+    temperamentos: '',
+    image: ''
+  })
 
-const handlerWeight = (event) => {
+
+  const [validform, setvalidForm] = useState({
+    name: '',
+    height: '',
+    weight: '',
+    life_span: '',
+    temperamentos: '',
+    image: ''
+  })
+
+
+
+  const [temperament] = useState([]);
+
+  const handlerSortByTemp = (e) => {
+    e.preventDefault(e);
+
+
+    e.target.value !== 'Temperamentos' && !temperament.includes(e.target.value) && temperament.push(e.target.value);
+
+
+    //  console.log(temperament)
+    setForm({ ...form, temperamentos: temperament })
+  }
+
+
+  //------------------------------------------------------------------------------------------------
+
+  //Cambio el estado validador, para luego hacer las verifcaciones:
+
+  const [url, setURL] = useState(false);
+  const [name, setName] = useState(false);
+  const [weight, setWeight] = useState(false);
+  const [lifeSpan, setLifeSpan] = useState(false);
+  const [height, setHeight] = useState(false);
+
+
+
+  const setHandler = (event) => {
+    event.preventDefault(event);
     let value = event.target.value;
-    let validator = /^\d+$/;
-    if(validator.test(value.split('-').join('')) || value.length === 0 || (value < 6 && value.filter(a=> a === '-').length > 1)){
-    if(value.length === 6) return false;
-    else if(value.length === 2){
-    value = value + '-'
+    if (event.target.name === 'name') {
+      setvalidForm({ ...validform, [event.target.name]: value })
+    }
+    // setvalidForm({...validation,[event.target.name]})
+    if (event.target.name === 'weight') {
+      setvalidForm({ ...validform, [event.target.name]: value })
     }
 
-    else if(value.length <= 3){
-       value = value.replace('-', '')
+    if (event.target.name === 'height') {
+      setvalidForm({ ...validform, [event.target.name]: value })
+    }
+
+    if (event.target.name === 'life_span') {
+      setvalidForm({ ...validform, [event.target.name]: value })
+    }
+
+    if (event.target.name === 'image') {
+      setvalidForm({ ...validform, [event.target.name]: value })
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+  //-------------------------------------------------------------------------------------------------
+
+
+  const handlerHeight = () => {
+    setHeight(false);
+    try {
+      if (!validation.test(validform.height.split('-').join('')) && validform.height !== '') {
+        throw new Error;
       }
-    
-    setForm({...form,[event.target.name]:value})
+      if (validform.height.length >= 5) {
+        if (validationLifeSpan.test(validform.height) || validform.height == '') {
+          setForm({ ...form, height: validform.height });
+          setHeight(false);
+        }
+        else {
+          throw new Error;
+        }
+      }
     }
-}
 
-const handlerHeight = (event) => {
-  let value = event.target.value;
-  let validator = /^\d+$/;
-  let cortado1 = value.slice(0,2);
-  let cortado3 = value.slice(3,5);
-  let cortado2 = value.slice(2,3)?value.slice(2,3).replace(validator,'-'):'';
-  let valorFinal = ''
-  
-  if(cortado1.split(' ') !== '-' && cortado3.split(' ') !== '-')
-  if(validator.test(cortado1)) valorFinal=cortado1;
-  valorFinal += cortado2
-  if(validator.test(cortado3)) valorFinal +=cortado3;
-  // if(valorFinal.length <= 6) cortado2.replace(' - ', '')
-  // if(validator.test(cortado3)) valorFinal+= cortado3;
-
-
-
-   /* let verificadorDeGuiones = separador.find(a=>a == '-');
-   if(validator.test(value.split('-').join('')) || value.length == 0){
-   if(verificadorDeGuiones && value[2] !== '-') return false
-   if(value.length === 6) return false;
-   else if( value.length == 2){
-     separador.push('-')// Por algun motivo no me leia el length al poner el guion asi que decidi usar un push con un split;
-     value = separador.join('')//con esto lo vuelvo palabra de nuevo
-     console.log(value.length)
-   }
- else if(value.length == 3 && separador[2] !== '-'){//Esto es el validador en caso quiera borrar y desaparezca el guion para no ignorar el validador del guion;
-  //   //separador[2] = '-';
-     separador.splice(2,1,'-')
-     value = separador.join('');
-   }
-  else if(value.length == 3 && value[value.length-1] =='-'){
-    value = value.replace('-', '');
-  }
-} */
-setForm({...form,[event.target.name]:valorFinal})
-}
-
-
-const handlerName = (event) =>{
-  let value = event.target.value;
-  let validator = /^[a-zA-Z\s]{1,20}$/;
-  if(validator.test(value) || value.length === 0){
-  setForm({...form,[event.target.name]:value})
-  }
-}
-
-const handlerLife_Span = (event) =>{
-  let value = event.target.value;
-  let validator = /^\d+$/;
-  console.log(value.replace('a',''))
-  if(validator.test(value.split('a').join('')) || value.length === 0){
-  if(value.length === 9) return false;
-  else if(value.length === 2){
-  value = value + ' a '
-  }
-  else if(value.length <= 10){
-     console.log('validador de borrado',value)
-     value = value.replace(/ /g,'').replace('a', '')
+    catch {
+      setHeight(true)
     }
-  
-  setForm({...form,[event.target.name]:value})
-}
-
-}
-
-const handlerTemperament = (event) =>{
-  let value = event.target.value;
-  let validator = /^[a-zA-Z\s]{1,20}$/;
-  if(validator.test(value) || value.length === 0){
-  setForm({...form,[event.target.name]:value})
   }
-}
 
-console.log(form)
-console.log(url.image)
-const handlerImageURL = (event)=>{
- let value = event.target.value
- 
- 
+  console.log(height)
 
 
-
- setURL({...url,[event.target.name]:value})
-
- 
-
-}
-
-const dataValidator = (form.name !=='' && form.height !== '' && form.weight !== '' && form.life_span !== '' && form.temperamentos !== '')?true:false;
+  const handlerImageURL = (event) => {
 
 
+  }
 
-console.log(form)
-console.log(dataValidator)
-//el name del input hace que el handler pueda reconocer el objetico con el que se esta trabajando,
-//NO OLVIDAR
+  const validationName = () => {
+    setName(false)
+    try {
+      if (validator.test(validform.name) || validform.name == '') {
+        setForm({ ...form, name: validform.name });
+        setName(false);
+      }
+      else {
+        throw new Error;
+      }
+    }
+    catch {
+      setName(true);
+    }
 
-return (<>
-<Link to={'/home'}><button>Home</button></Link>
-<div>
-  <label>
-    Introduce el nombre del perro:
-     <input type="text"
+  }
+
+
+
+
+  const validationWeight = () => {
+    setWeight(false)
+    try {
+      if (!validation.test(validform.weight.split('-').join('')) && validform.weight !== '') {
+        throw new Error;
+      }
+      if (validform.weight.length >= 5) {
+        if (validationLifeSpan.test(validform.weight) || validform.weight == '') {
+          setForm({ ...form, weight: validform.weight });
+          setWeight(false);
+        }
+        else {
+          throw new Error;
+        }
+      }
+    }
+
+    catch {
+      setWeight(true)
+    }
+  }
+
+
+  const validationLife_Span = () => {
+
+    setLifeSpan(false)
+
+    try {
+
+      if (!validation.test(validform.life_span.split('-').join('')) && validform.life_span !== '') {
+        throw new Error;
+      }
+      if (validform.life_span.length >= 5) {
+
+        if (validationLifeSpan.test(validform.life_span) || validform.life_span == '') {
+          setForm({ ...form, life_span: validform.life_span });
+          setLifeSpan(false);
+        }
+        else {
+          throw new Error;
+        }
+      }
+    }
+
+    catch {
+      setLifeSpan(true)
+    }
+  }
+
+
+
+  const validationUrl = () => {
+    setURL(false);
+
+    try {
+
+      if (validform.image == '' || validform.image.split('.').length > 2 && (validform.image.split('.').includes('jpg') || validform.image.split('.').includes('png'))) {
+        setForm({ ...form, image: validform.image });
+        setURL(false);
+      }
+      else {
+        throw new Error
+      }
+
+    }
+
+    catch {
+
+      setURL(true)
+
+    }
+
+
+  }
+
+
+
+  useEffect(() => {
+    validationName();
+    validationWeight();
+    validationLife_Span();
+    handlerHeight();
+    validationUrl();
+  }, [validform])
+
+  console.log(validform);
+  console.log(temperament)
+
+
+  const dataValidator = (form.name !== '' && form.height !== '' && form.weight !== '' && form.life_span !== '' && form.temperamentos !== '') ? true : false;
+
+  // eslint-disable-next-line no-console
+  useEffect(() =>
+    dispatch(getTemperaments())
+    , [dispatch])
+
+
+  return (<>
+    <Link to={'/home'}><button>Home</button></Link>
+
+
+    <form>
+      <div>
+        <label>
+          Introduce el nombre del perro:<br />
+          <input type="text"
             name="name"
-            onChange={(e)=>{handlerName(e)}}
-            value={form.name}/>
-  </label> <br/>
+            onChange={(e) => { setHandler(e) }}
+            value={validform.name} />
+          {
+            name && <div>{`${validform.name} no es un nombre válido, solo se permiten letras`}</div>
 
+          }
+        </label>
+        <br />
 
-   {/* ------------------------------------------------   */}
+        {/* ------------------------------------------------   */}
 
-   <label>
-    ¿Cuanto es su peso promedio? de:
-     <input 
+        <label>
+          Suele pesar entre:<br />
+          <input
             type="text"
             name="weight"
-            onChange={(e)=>{handlerWeight(e)}}
-            value={form.weight}/>
-  </label> <br/>
+            onChange={(e) => { setHandler(e) }}
+            value={validform.weight} />
+          {
+            weight && <div>{`Solo numeros ordenados de esta manera 00-00`}</div>
+          }
+
+        </label> <br />
 
 
-  {/* ------------------------------------------------   */}
+        {/* ------------------------------------------------   */}
 
-  <label>
-    ¿Cuanto será su tamaño promedio? de:
-     <input type="text"
+        <label>
+          Puede medir entre: <br />
+          <input type="text"
             name="height"
-            onChange={(e)=>handlerHeight(e)}
-            value={form.height}/>
-  </label>cm{} <br/>
+            onChange={(e) => setHandler(e)}
+            value={validform.height} />
+          {
+            height && <div>{`Solo numeros ordenados de esta manera 00-00`}</div>
+          }
+        </label><br />
 
-  {/* ------------------------------------------------   */}
+        {/* ------------------------------------------------   */}
 
-  <label>
-    ¿Cual es su esperanza de vida? de:
-     <input type="text"
+        <label>
+          Vive entre: <br />
+          <input type="text"
             name="life_span"
-            onChange={(e)=>{handlerLife_Span(e)}}
-            value={form.life_span}/>
-  </label>años <br/>
+            onChange={(e) => { setHandler(e) }}
+            value={validform.span} />
+          {
+            lifeSpan && <div>{`Solo numeros ordenados de esta manera 00-00`}</div>
+          }
 
-  {/* ------------------------------------------------   */}
+        </label><br />
 
-
-  <label>
-    ¿Cual es su temperamento?
-    <input type="text"
-            name="temperamentos"
-            onChange={(e)=>{handlerTemperament(e)}}
-            value={form.temperamentos}/>
-  </label> <br/>
+        {/* ------------------------------------------------   */}
 
 
-  {/* ------------------------------------------------   */}
 
 
-  <label>
-    Agrega una URL con la imagen de tu perro:
-   
-    <input type="text"
+        <label>
+          Agrega una URL con la imagen de tu perro: <br />
+
+          <input type="text"
             name="image"
-            onChange={(e)=>{handlerImageURL(e)}}
-            value={url.image}/>
+            onChange={(e) => { setHandler(e) }}
+            value={validform.image} />
+        </label><br />
 
-  </label>
+        {
 
-</div>
+          url && <div>{`Ingresa una URL Valida, solo JPG o PNG`}</div>
+
+        }
 
 
 
 
+        {/* ------------------------------------------------   */}
 
-</>)
+
+        <label>Select temperament <br />
+          <select name='sort by temp' onChange={handlerSortByTemp}>
+            <option  >Temperamentos</option>
+
+            {
+
+
+              temperaments.length ? temperaments.sort((a, b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0).map(a =>
+
+                (<option key={a.name} value={a.name}>{a.name}</option>))
+
+                : false
+
+            }
+
+          </select>
+
+        </label>
+
+
+
+
+      </div>
+    </form>
+
+  </>)
 }
 
 export default Form
