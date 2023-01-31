@@ -76,7 +76,7 @@ const Home = () => {
 
   const nextHandler = (final) => {//Verifico si estoy tomando de mis elementos filtrados o mis elementos sin filtrar para que no llegue al limite del index y lo supere
 
-    if (pagina == temper.length ? Math.ceil(temper.length / elementsPerPage) : Math.ceil(breeds.length / elementsPerPage)) {
+    if (pagina === temper.length ? Math.ceil(temper.length / elementsPerPage) : Math.ceil(breeds.length / elementsPerPage)) {
       setPagina(temper.length ? Math.ceil(temper.length / elementsPerPage) : Math.ceil(breeds.length / elementsPerPage))
     }
 
@@ -149,7 +149,7 @@ const Home = () => {
 
   // eslint-disable-next-line no-console
   useEffect(() => {
-    function a() {
+
       setLoading(true);
       dispatch(searchDog(value));
       // eslint-disable-next-line no-console
@@ -158,8 +158,6 @@ const Home = () => {
         setTemper([])
       }
       setLoading(false);
-    }
-    a();
   }, [dispatch, value]);
 
 
@@ -191,11 +189,14 @@ const Home = () => {
             <div className={styles.menu}>
 
 
-              <label>Select temperament
+
+
+              <div >
+              <label>Select temperament: 
 
                 <select name='sortbytemp' onChange={handlerSortByTemp}>
 
-                  <option value="All">All</option>
+                  <option value="All">Temperamentos</option>
 
                   {
 
@@ -205,22 +206,14 @@ const Home = () => {
 
                 </select>
               </label>
-
-
-
-
-
-
-
-
-
-              <Link to={'/createdog'}><button>CreateActivity</button></Link>
-              <input name='inputName' onChange={e => Handler(e.target.value)}></input>
-              <button key={Math.random()} value={'A-Z'} onClick={handlerFilter}>A-Z</button>
-              <button value={'Z-A'} onClick={handlerFilter}>Z-A</button>
-              <button value={'Max-Min'} onClick={handlerWeight}>Max-min</button>
-              <button value={'Min-Max'} onClick={handlerWeight}>Min-Max</button>
-              <button onClick={resetFilters}>Reset Filters</button>
+              <Link to={'/createdog'} className={styles.linkColor}><button className={styles.homeButton} >CreateBreed</button></Link>
+              <button className={styles.homeButton} key={Math.random()} value={'A-Z'} onClick={handlerFilter}>A-Z</button>
+              <button className={styles.homeButton} value={'Z-A'} onClick={handlerFilter}>Z-A</button>
+              <button className={styles.homeButton} value={'Max-Min'} onClick={handlerWeight}>Max-min</button>
+              <button className={styles.homeButton} value={'Min-Max'} onClick={handlerWeight}>Min-Max</button>
+              <button className={styles.homeButton} onClick={resetFilters}>Reset Filters</button>
+              <input  name='inputName' onChange={e => Handler(e.target.value)}></input>
+              </div>
 
             </div>
           </div>
@@ -270,7 +263,7 @@ const Home = () => {
 
 
           <div className={styles.pagination}>
-            <Pagination elementsPerPage={elementsPerPage} allElements={temper.length && temper !== '' ? temper.length : breeds.length} paginado={paginado} prevHandler={prevHandler} nextHandler={nextHandler} reset={reset} />{/*el valor de la funcion de paginado aumenta segun el bucle for en el componente Paginate*/}
+            <Pagination elementsPerPage={elementsPerPage} allElements={temper.length && temper !==''? temper.length : breeds.length} paginado={paginado} prevHandler={prevHandler} nextHandler={nextHandler} reset={reset} />{/*el valor de la funcion de paginado aumenta segun el bucle for en el componente Paginate*/}
           </div>
         </div>
       </div>

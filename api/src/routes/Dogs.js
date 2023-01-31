@@ -28,6 +28,7 @@ const API = `https://api.thedogapi.com/v1/breeds?${API_KEY}`;
 
 
      const contenedorParaPerrosAPI = async()=>{ //Lo que quiero hacer en esta funcion es llamar a los perros de la API;
+     
      try{
      const contenedorApi = await axios.get(API);
      const contenedorInfo = await contenedorApi.data.map(perro=>{
@@ -132,26 +133,26 @@ const {name, weight, height, life_span, temperamentos, image} = req.body;
 let weight_ = weight.split('-');
 let height_ = height.split('-');
 
-let temperaments = [temperamentos.join('').toLowerCase().charAt(0).toUpperCase()+temperamentos.join('').toLowerCase().slice(1)];
-
+// let temperaments = [temperamentos.join('').toLowerCase().charAt(0).toUpperCase()+temperamentos.join('').toLowerCase().slice(1)];
+console.log(temperamentos)
 let create = await Dog.create({
     name,
     height:height_,
     weight:weight_,
     life_span,
-    temperament: temperaments,
+    temperament: temperamentos,
     image
 })//Los datos los recibe atravez de un array;
 
-console.log(temperamentos.filter((temp)=>temp))
+// console.log(temperamentos.filter((temp)=>temp))
 // hasta aqui si envie un temperamento que no existe
-await temperaments.forEach((temp)=>Temperaments.findOrCreate({where:{name:temp}})) // aqui lo crea y si lo encuentra entonces no hace nada
+await temperamentos.forEach((temp)=>Temperaments.findOrCreate({where:{name:temp}})) // aqui lo crea y si lo encuentra entonces no hace nada
 
 
 //como ya lo cree antes me hace una relacion
 const relacion = await Temperaments.findAll({
     where:{
-        name:temperaments
+        name:temperamentos
     }
 })
   //animal: addAnimals

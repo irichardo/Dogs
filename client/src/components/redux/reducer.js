@@ -90,8 +90,7 @@ const rootReducer = (state=initialState, action)=>{//Action es la inforamcion ll
            return{...state, filter_by_temps:''}//tambien puedo usarlo para vacear el filtro más adelante cuando quite los filtros
            
         }
-        if(action.payload !== 'All'){
-                                             //state.breed y lo de referencia supongamos el de temperamentos
+        if(action.payload !== 'All'){        //state.breed y lo de referencia supongamos el de temperamentos
                                              //
             filtrado = state.breed !== 'error'?state.breed.filter(a=> a.temperaments.includes(action.payload)):'Error';
             filtradoDB = state.breed.filter(a=> a.temperaments[0] && a.temperaments[0].name? a.temperaments[0].name.includes(action.payload)?a.temperaments[0].name:false:false);

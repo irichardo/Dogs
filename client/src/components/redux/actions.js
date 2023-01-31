@@ -5,6 +5,12 @@ export const getBreed = () =>{
     return async function(dispatch){
     try{
       const res = await axios('http://localhost:3001/dogs');//Llamo a la api local
+
+      // dato numeros = [1,2,3,4,5,6,7,8,9,10];
+      //AHHH, en el back se manejan los datos como array;
+      //numeros[0]
+      //{1:'1', 2:'2', 3:'3'}
+      //numeros[0]
       // console.log('aaaaaaa',res.data.find(a=>a.temperaments[0].name))
       if(res){
 
@@ -63,11 +69,17 @@ export const dogDetail = (id)=>{
 export const createBreed = (create) =>{
   return async function(){
     try{
-      const  rest = await axios.post('http://localhost:3001/dogs',create)
-      return rest;
+      if(create){
+
+        const  rest = await axios.post('http://localhost:3001/dogs',create)
+        return rest;
+      }
+      else{
+        throw new Error('Faltan datos')
     }
-    catch{
-      throw new Error;
+    }
+    catch(error){
+      console.log(error)
     }
   }
 }

@@ -1,0 +1,286 @@
+
+.background{
+    background-image: url('https://img.freepik.com/vector-gratis/fondo-invierno-hojas-pinceles-color-pastel_220290-42.jpg?w=996&t=st=1675105410~exp=1675106010~hmac=d3d3eda836d3b5b097693abd48476fb3560aea1af13a887bf9e7890689f26084');
+    display: inline-flex;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    justify-content: center;
+    width: 202vh;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.contain{
+    display: inline-flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.formContent{
+    height: 100vh;
+    width: 70vh;
+    background-color: rgba(70, 70, 70, 0.4);
+}
+
+.formElements{
+   position: relative;
+   padding: 10px;
+}
+
+.fail{
+    padding: 0px;
+    margin: 0px;
+    height: 20px;
+    color: red;
+    background-color: chartreuse;
+    
+}
+
+.buttonContent{
+    clip-path: circle();
+    background-color: #363636;
+}
+
+.buttonAnimation {
+    outline: none;
+    height: 100px;
+    width: 100px;
+    background-color: rgba(70, 70, 70, 0.0);
+  }
+  
+  .buttonAnimation:hover {
+    animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+  
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+  
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+
+  
+   .inputstyle{
+    box-sizing: border-box;
+    height: 20px;
+    width: 250px;
+    padding: 18.5px;
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 2px 5px rgba(15, 15, 51, 0.4);
+    font-size: 15px;
+    color: rgba(15, 15, 51, 0.8);
+    background-color: #E5E5E5;
+    transition: .4s;
+    
+  } 
+  
+   .inputstyle:hover{
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 5px 5px rgba(15, 15, 51, 0.4);
+  }
+  
+  .inputstyle:not(:placeholder-shown) {
+    margin-bottom: 10px;
+    border-bottom: 6px solid #3782F7;
+    height: 50px;
+  }  
+ 
+
+
+   .select{
+    width: 250px;
+    border-radius: none;
+    box-sizing: border-box;
+  } 
+ 
+ .submitStyle {
+    pointer-events: none;
+    align-items: center;
+    appearance: none;
+    background-color: rgb(95, 95, 95);
+    border: 1px solid #dbdbdb;
+    border-radius: .375em;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #363636;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 1rem;
+    height: 2.5em;
+    justify-content: center;
+    line-height: 1.5;
+    padding: calc(.5em - 1px) 1em;
+    position: relative;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    white-space: nowrap;
+  }
+  
+  .submitStyle:active {
+    border-color: #4a4a4a;
+    outline: 0;
+  }
+  
+  .submitStyle:focus {
+    border-color: #485fc7;
+    outline: 0;
+  }
+  
+  .submitStyle:hover {
+    border-color: #b5b5b5;
+  }
+  
+  .submitStyle:focus:not(:active) {
+    box-shadow: rgba(72, 95, 199, .25) 0 0 0 .125em;
+  }
+
+   .inputstyle{
+    font-style: oblique;
+    box-sizing: border-box;
+    height: 20px;
+    width: 250px;
+    padding: 18.5px;
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 2px 5px rgba(15, 15, 51, 0.4);
+    font-size: 15px;
+    color: rgba(15, 15, 51, 0.8);
+    background-color: #E5E5E5;
+    transition: .4s;
+    
+  }
+  
+  
+  .inputstyle:hover{
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 5px 5px rgba(15, 15, 51, 0.4);
+  }
+
+
+  
+  .inputstyle:not(:placeholder-shown) {
+    margin-bottom: 10px;
+    border-bottom: 6px solid #3782F7;
+    height: 50px;
+  }   
+
+
+  .select{
+    width: 250px;
+    border-radius: none;
+    box-sizing: border-box;
+  }
+ 
+ .submitStyle2 {
+    align-items: center;
+    appearance: none;
+    background-color: rgb(238, 106, 106);
+    border: 1px solid #dbdbdb;
+    border-radius: .375em;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #363636;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: "Segoe UI","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 1rem;
+    height: 2.5em;
+    justify-content: center;
+    line-height: 1.5;
+    padding: calc(.5em - 1px) 1em;
+    position: relative;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: top;
+    white-space: nowrap;
+    width: 200px;
+  }
+  
+  .submitStyle2:active {
+    border-color: #4a4a4a;
+    outline: 0;
+    width: 200px;
+  }
+  
+  .submitStyle2:focus {
+    border-color: #485fc7;
+    outline: 0;
+    width: 200px;
+  }
+  
+  .submitStyle2:hover {
+    border-color: #b5b5b5;
+    width: 200px;
+  }
+  
+  .submitStyle2:focus:not(:active) {
+    box-shadow: rgba(72, 95, 199, .25) 0 0 0 .125em;
+    width: 200px;
+  }
+
+  .dogCreate{
+    position: absolute;
+    top:100%;
+    right: 100%;
+    width: 30em;
+    height: 20em;
+    border-radius: 20%;
+    border-style:solid;
+    border-color: rgba(38, 53, 117, 0.25);
+  }
+
+  .submiteMessage{
+    
+    color: rgb(83, 83, 83);
+  }
+
+  .temperamentList{
+    position: absolute;
+    width: 450px;
+    height: 250px;
+    top: 60%;
+    left:4%;
+  }
+
+  .buttonTemp{
+    
+    display: inline-flex;
+    outline: 0;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 4px;
+    font-size: 13px;
+    height: 30px;
+    background-color: #9147ff;
+    color: white;
+    padding: 10px 10px;
+    margin: 10px;
+    text-align: center;
+    align-items: center;
+}
+.buttonTemp:hover {
+    background-color: #772ce8;
+}

@@ -13,24 +13,21 @@ const DogDetail = (props) => {
     const [breed, setBreed] = useState([])
 
 
-    console.log('aqui', dogDetail(12))
-
     // eslint-disable-next-line no-console
-    function Handler() {
-        setBreed([]);
-        dispatch(dogDetail(id))
-    }
-
     useEffect(() => {
-        Handler()
-    }, [id])
+        setBreed([]);
+        dispatch(dogDetail(id));
+    },[id])
 
     useEffect(() =>
         setBreed(breedDetail), [breedDetail]);
 
     useEffect(() =>
         setBreed([]), []);
-    console.log('aaaa', breed.length ? breed[0].temperaments : false)
+
+
+
+
     return (
         breed === 'error' ? <><div>no se ha encontrado el id</div></> :
             breed.length ? <>

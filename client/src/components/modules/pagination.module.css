@@ -4,8 +4,25 @@
     float: left;
     list-style-type: none;
     text-decoration: none;
+    display: inline-flex;
   }
 
+
 .buttonIndicator{
-  background-color: red;
+  text-align: center;
+  padding: 0px;
+  margin: 0px;
+  width:50px;
+  height:50px;
+  background-color:rgba(98, 146, 120, 0.5);
+  border-color: rgba(15, 15, 51, 0.5) ;
+  border-radius: 100%;
+}
+
+.buttonIndicatorNoSelected{
+  padding: 0px;
+  margin: 0px;
+  width:35px;
+  height:35px;
+  
 }

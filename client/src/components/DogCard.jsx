@@ -17,7 +17,7 @@ export const DogCard = ({ name, height, image, temperament, id }) => {
 
 
 
-                <div>{name}</div>
+                <div className={style.nameFont}>{name}</div>
 
 
                 {
@@ -30,20 +30,32 @@ export const DogCard = ({ name, height, image, temperament, id }) => {
 
                 }
 
-                Comportamientos:<br /><div className={style.comportamiento}>{`${temperament[0].name && temperament[0].name.split(',').length < 1 ? temperament[0].name.join('-') : temperament.join('-')}`}</div>
-
+                Comportamientos:<br /><div className={style.comportamiento}>{`${temperament[0].name && temperament[0].name.split(',').length < 1?
+                                                                                temperament[0].name.join('-') 
+                                                                               :temperament.join('-').split('-').length>3&&!temperament[0].name?`${temperament[0]}-${temperament[1]}-${temperament[2]}...`
+                                                                               :temperament[0].name?temperament.map(a=>a.name).join(','):temperament}`//Perros DB
+                                                                            }</div>
+            
 
             </div>
 
-
+  
         </>
 
 
     )
 
 
-
-
+//     temperament[0].name.join('-') 
+// :   temperament.join('-')}`
+ 
 }
+
+// temperament[0].name && temperament[0].name.split(',').length < 1?
+//   temperament[0].name.join('-') :
+//   (temperament[0].name.split(',').length >= 3 ? 
+//     temperament[0].name.split(',').slice(0, 3).join(',') + '...' : 
+//     temperament.join('-')
+//   )
 
 export default DogCard;

@@ -1,4 +1,4 @@
-   .cardContent{
+  .cardContent{
     justify-content:space-between;
     display:grid;
     grid-template-columns: repeat(4, 1fr);
@@ -52,16 +52,17 @@
   left: -2%;
   top: 70%;
   }
+
   .menuContainer{
-    background-color: black ;
+    background-color: #008060;
+
   }
-  
+
   .menu{
     display: inline-flex;
     justify-content: space-around;
-    width: 120vh;
+    width: 140vh;
     height:5vh;
-    background-color: black;
   }
 
 
@@ -71,8 +72,8 @@
     display:inline-flex;
     position: relative;
     justify-content: space-around;
-    top: -20px;
-    width: 550px;
+    bottom: 40px;
+    width: 600px;
   }
   
 /* 
@@ -80,3 +81,27 @@
   .buttonDiv{
     background-color: beige;
   } */
+
+  .homeButton{
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    text-align: center;
+    border: 0;
+    min-height: 36px;
+    min-width: 100px;
+    color: #ffffff;
+    background: #008060;
+    border-radius: none;
+    font-weight: 500;
+    font-size: 14px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px, rgba(0, 0, 0, 0.2) 0px -1px 0px 0px inset;
+    
+  }
+  .homeButton:hover {
+      background: #006e52;
+  }
+  .linkColor{
+    padding: 0px;
+    margin: 0px;
+  }

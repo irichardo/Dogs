@@ -93,7 +93,7 @@ return(
 
              <li onClick={()=>{ paginado(number); buttonIndexHandler(number)}} key={number} className={styles.pagination_a}>
     
-             <button type="button" className={number===color?styles.buttonIndicator:false} value ={number} >{number}</button>
+             <button type="button" className={number===color?styles.buttonIndicator:styles.buttonIndicatorNoSelected} value ={number} >{number}</button>
     
              </li>))
           }
