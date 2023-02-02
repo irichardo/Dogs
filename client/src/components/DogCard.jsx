@@ -6,7 +6,6 @@ export const DogCard = ({ name, height, image, temperament, id }) => {
     //jsx, ¿Que es jsx?, Antes tu tenias que poner la información
     // uno por uno , Ahora con jsx, puedes hacer que css y trabajar con JS reciba variables.
 
-
     return (
         <>
 
@@ -30,10 +29,12 @@ export const DogCard = ({ name, height, image, temperament, id }) => {
 
                 }
 
-                Comportamientos:<br /><div className={style.comportamiento}>{`${temperament[0].name && temperament[0].name.split(',').length < 1?
+                Comportamientos:<br /><div className={style.comportamiento}>{`${
+                                                                               temperament[0].name && temperament[0].name.split(',').length < 1?
                                                                                 temperament[0].name.join('-') 
                                                                                :temperament.join('-').split('-').length>3&&!temperament[0].name?`${temperament[0]}-${temperament[1]}-${temperament[2]}...`
-                                                                               :temperament[0].name?temperament.map(a=>a.name).join(','):temperament}`//Perros DB
+                                                                               :temperament[0].name?temperament.map(a=>a.name).join('-'):temperament
+                                                                            }`//Perros DB
                                                                             }</div>
             
 

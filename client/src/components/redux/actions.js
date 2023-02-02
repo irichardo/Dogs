@@ -1,24 +1,35 @@
 import axios from 'axios';
 import { GET_BREED, SEARCH_DOG, DOG_DETAIL, SORT_BY_NAME, SORT_BY_WEIGHT, GET_TEMPERAMENTS, GET_FILTER_BY_TEMPS} from './index';
 
-export const getBreed = () =>{
+export const getBreed = (payload) =>{
     return async function(dispatch){
+
+      console.log(payload);
+    let res = '';
     try{
-      const res = await axios('http://localhost:3001/dogs');//Llamo a la api local
 
-      // dato numeros = [1,2,3,4,5,6,7,8,9,10];
-      //AHHH, en el back se manejan los datos como array;
-      //numeros[0]
-      //{1:'1', 2:'2', 3:'3'}
-      //numeros[0]
-      // console.log('aaaaaaa',res.data.find(a=>a.temperaments[0].name))
-      if(res){
-
-      return dispatch({
+      res = await axios('http://localhost:3001/dogs');//Llamo a la api local
+      if(!payload){
+        return dispatch({
+          type: GET_BREED, //Nombro el tipo de action que voy a usar
+          payload: res.data //Envio un payload con toda la data recogida de esa accion.
+        })
+      }
+      if(payload){
+        if(payload === "DB"){
+        return dispatch({
+              type: GET_BREED, //Nombro el tipo de action que voy a usar
+              payload: res.data.filter(a=>a.indb) //Envio un payload con toda la data recogida de esa accion.
+            })
+        };
+        if(payload === 'API'){
+          return dispatch({
             type: GET_BREED, //Nombro el tipo de action que voy a usar
-            payload: res.data //Envio un payload con toda la data recogida de esa accion.
+            payload: res.data.filter(a=>!a.indb) //Envio un payload con toda la data recogida de esa accion.
+          })
+        }
+      }
       
-          })}
     }
     
     catch(error){//Catch que atrapara el error y me lo mostrara en un console.log
@@ -30,8 +41,9 @@ export const getBreed = () =>{
 export const searchDog = (name) =>{
   return async function(dispatch){
   try{
-     const res = await axios(`http://localhost:3001/dogs?name=${name}`)
-     if(res){
+     const res = await axios.get(`http://localhost:3001/dogs?name=${name}`)
+     console.log(res.data==='error')
+     if(res.data){
       return dispatch({
         type: SEARCH_DOG,
         payload: res.data
@@ -49,14 +61,11 @@ export const dogDetail = (id)=>{
   return async function(dispatch){
     try{
       const res = await axios(`http://localhost:3001/dogs/${id}`)
-      if(res.data[0]){
+      if(res.data){
         return dispatch({
           type: DOG_DETAIL,
           payload: res.data
         })
-      }
-      else{
-        throw new Error();
       }
     }
     catch(error){
@@ -112,9 +121,10 @@ return async function(dispatch){
       type: GET_TEMPERAMENTS,
       payload: res.data
     })}
+
   } 
-  catch{
-    throw new Error()
+  catch(error){
+    console.log(error.message)
   }
 }
 }

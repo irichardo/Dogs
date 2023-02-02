@@ -9,8 +9,6 @@ export const Pagination = ({elementsPerPage,allElements, paginado, prevHandler, 
    const[buttonIndex2, setButtonIndex2]=useState(5);
    const[color, setColor] = useState(1);
 
-
-   console.log('aaaaaaaaaaaa',allElements, elementsPerPage, buttonIndex, buttonIndex2);
    
    for(let i = 1 ; i <= Math.ceil(allElements/elementsPerPage); i++){
       
@@ -64,7 +62,7 @@ if(val === 'allNext' ){
 }
 }
 
-console.log(numberPage);
+
 
 useEffect(()=>{
    if(reset === true){

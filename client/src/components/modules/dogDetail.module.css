@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&family=Roboto+Condensed&family=Roboto:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital@1&family=Noto+Serif&family=Quicksand:wght@700&family=Roboto+Condensed&family=Roboto:wght@100&display=swap');
+.fontTittle{
+    font-family: 'Noto Seri', 'Roboto Condensed';
+    font-size: 2em;
+}
+
+.fontTittleContent{
+    font-size: 18px;
+font-family: 'Lato', sans-serif;
+font-family: 'Noto Serif', serif;
+font-family: 'Quicksand', sans-serif;
+font-family: 'Roboto', sans-serif;
+font-family: 'Roboto Condensed', sans-serif;
+}
+
+
+.background{
+  background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/39b11f3e-0c5b-4990-ae0c-99b8dc2ada5b/d8nvum4-245f3d87-801e-4fd4-9924-0468f9250cfd.jpg/v1/fill/w_1024,h_685,q_75,strp/art4_by_choops91_d8nvum4-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9Njg1IiwicGF0aCI6IlwvZlwvMzliMTFmM2UtMGM1Yi00OTkwLWFlMGMtOTliOGRjMmFkYTViXC9kOG52dW00LTI0NWYzZDg3LTgwMWUtNGZkNC05OTI0LTA0NjhmOTI1MGNmZC5qcGciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.vvoIuQryBRLLBBeQdjV3wrFLBPU7ZLZ-MzqpC88rLhU');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 220vh;
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardDetailDiv{
+    height: 600px;
+    width: 600px;
+    position: absolute;
+    justify-items: center;
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(1,3fr);
+    right: 30%;
+    background-color:rgba(255, 255, 255, 0.5);
+    border-radius: 5%;
+}
+
+.image{
+    border-radius: 5%;
+    height: 280px;
+    width: 350px;
+}
+
+.button{
+    position: relative;
+    top: 50%;
+    right: -45%;
+    width: 30px;
+    height: 30px;
+    background-color:rgba(245, 31, 77, 0.8) ;
+    border: none;
+    border-radius: 20%;
+    text-align: center;
+
+}

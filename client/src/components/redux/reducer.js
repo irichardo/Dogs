@@ -2,7 +2,7 @@ const { GET_BREED, SEARCH_DOG, DOG_DETAIL, SORT_BY_NAME, SORT_BY_WEIGHT, GET_TEM
 
 const initialState={
     breed:[],
-    breed_detail:[],
+    breed_detail:{},
     temperaments:[],
     filter_by_temps:[]
 }//Declaro el estado inicial
@@ -12,10 +12,14 @@ const initialState={
 const rootReducer = (state=initialState, action)=>{//Action es la inforamcion llegara desde la seccion de actions con el contenido del payload;
 
     switch(action.type){//aqui uso 
-    
+//ese payload viene con con los datos y el tiempo de caso que estoy presentando
     
     case GET_BREED:
-        return{...state, breed: action.payload, breed_detail:{}}
+        
+        if(!action.payload.length){
+            return{...state, breed:'error',  breed_detail:{}, filter_by_temps:[]}
+        }
+        return{...state, breed:action.payload, breed_detail:{}, filter_by_temps:[]}
     
     
     case SEARCH_DOG:
@@ -24,8 +28,8 @@ const rootReducer = (state=initialState, action)=>{//Action es la inforamcion ll
     
     
     case DOG_DETAIL:
-        console.log(action.payload)
-        return{...state, breed_detail: action.payload, breed:''}
+        
+        return{...state, breed_detail: action.payload}
     
     
     case SORT_BY_NAME:
@@ -93,13 +97,17 @@ const rootReducer = (state=initialState, action)=>{//Action es la inforamcion ll
         if(action.payload !== 'All'){        //state.breed y lo de referencia supongamos el de temperamentos
                                              //
             filtrado = state.breed !== 'error'?state.breed.filter(a=> a.temperaments.includes(action.payload)):'Error';
-            filtradoDB = state.breed.filter(a=> a.temperaments[0] && a.temperaments[0].name? a.temperaments[0].name.includes(action.payload)?a.temperaments[0].name:false:false);
+            filtradoDB = state.breed !== 'error'?state.breed.filter(a=> a.temperaments[0] && a.temperaments[0].name? a.temperaments[0].name.includes(action.payload)?a.temperaments[0].name:false:false):false;
+          
         }
-    
-
-        if(filtrado.length || filtradoDB.length){
+        
+        if(filtrado.length && filtradoDB){
            let Combinados = [...filtrado, ...filtradoDB];
            return{...state, filter_by_temps:Combinados}
+        }
+
+        if(filtrado.length){
+           return{...state,filter_by_temps:filtrado}
         }
         
         else{

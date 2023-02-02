@@ -128,6 +128,7 @@ const Form = () => {
           setForm({ ...form, height: validform.height });
 
           setHeight(false);
+          
         }
         else {
           throw new Error('Peso no valido');
@@ -148,7 +149,7 @@ const Form = () => {
   const validationName = () => {
     setName(null);
     try {
-      if (validator.test(validform.name) && validform.name.split(' ').length < 3) {
+      if (validator.test(validform.name) && validform.name.split(' ').length < 4) {
 
         setForm({ ...form, name: validform.name });
         setName(false);
@@ -199,6 +200,7 @@ const Form = () => {
           setForm({ ...form, weight: validform.weight });
 
           setWeight(false);
+          
         }
         else {
           throw new Error('Peso no valido');
@@ -232,7 +234,7 @@ const Form = () => {
       if (validform.life_span.length >= 5) {
 
         if (validationLifeSpan.test(validform.life_span) || validform.life_span === '') {
-
+         console.log('aaaaaaaaaa',validform.life_span)
           setForm({ ...form, life_span: validform.life_span });
 
           setLifeSpan(false);
@@ -242,12 +244,16 @@ const Form = () => {
         }
       }
     }
+    
 
     catch (error) {
       setLifeSpan(true);
       setErrorMessage({ ...errorMes, errorLifeSpan: error.message })
     }
   }
+  
+
+  
 
 
 
@@ -296,16 +302,18 @@ const Form = () => {
 
     if (e.target.value !== 'Temperamentos' && !temperament.includes(e.target.value) && temperament.push(e.target.value)) {
 
-      setForm({ ...form, temperamentos: temperament })
-
+      setForm({ ...form, temperamentos: temperament });
     };
 
   }
 
 
   const temperamentDeleteHandle = (value) => {
-    let filter = temperament.filter(a => a !== value.target.value)
+
+    let filter = temperament.filter(a => a !== value.target.value);
+    
     setTemperament(filter);
+
   }
 
 
@@ -315,11 +323,13 @@ const Form = () => {
   useEffect(() => {
     validationName();
     validationWeight();
-    validationLife_Span();
-    handlerHeight();
     validationUrl();
   }, [validform])
+  useEffect(()=>{
 
+    validationLife_Span();
+    handlerHeight();
+  },[validform])
   // console.log(validform);
   // console.log(temperament)
 
@@ -335,7 +345,7 @@ const Form = () => {
 
   // console.log(dataValidator);
 
-
+// console.log(lifeSpan)
   const formValidator = !name && !lifeSpan && !height && !weight && !url && dataValidator ? true : false;  //Aqui hago la validacion de dos datos, Primero que lleguen a 5 los que necesito
   //Segundo, para evitar spam pongo un verificador de vacios;
   // Y finalmente todos los verificadores de errores los manejor por separado
@@ -346,10 +356,9 @@ const Form = () => {
     dispatch(
       createBreed({
         ...form,
-        life_span: `${form.life_span} years`,
       })
     );
-    alert("The new dog was added successfully");
+    alert("La raza ha sido creado exitosamente");
     history.push("/home");
     setForm({
       name: '',
@@ -370,6 +379,8 @@ useEffect(() =>
   , [dispatch])
 
 
+  console.log('form',form)
+  console.log('aaaaaaa',validform)
 return (<>
 
   <div className={styles.contain}>
@@ -442,7 +453,7 @@ return (<>
                 name="life_span"
                 placeholder='de menor a mayor... 00-00'
                 onChange={(e) => { setHandler(e) }}
-                value={validform.span} />
+                value={validform.life_span} />
               {
                 lifeSpan && <div className={styles.fail}>{errorMes.errorLifeSpan}</div>
               }

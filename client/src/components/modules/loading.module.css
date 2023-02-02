@@ -1,0 +1,12 @@
+.loadingContainer{
+    position: absolute; 
+    display: inline-flex;
+    justify-content:center;
+    height: 150px;
+    width: 220vh;
+    background-color: white;
+    right: 5%;
+    left: -2%;
+    top: 70%;
+}
+

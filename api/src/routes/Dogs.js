@@ -32,7 +32,7 @@ const API = `https://api.thedogapi.com/v1/breeds?${API_KEY}`;
      try{
      const contenedorApi = await axios.get(API);
      const contenedorInfo = await contenedorApi.data.map(perro=>{
-     let temperamento = {};
+     let temperamento = [];
      perro.temperament?temperamento=perro.temperament.replace(/ /g,'').split(','):temperamento=['no se ha encontrado un temperamento'];
      //if(perro.temperament) temperamento = perro.temperament.split(','); //Verifico que el temperamento exista, y hago que se separe por comas en el array
      let altura = []; // 50 - 60
@@ -83,11 +83,19 @@ router.get('/', async(req,res)=>{
     
     const DatosApi = await contenedorParaPerrosAPI();
     const DatosDB  = await contenedorParaPerrosDB();
-    const combina2 = [...DatosApi,...DatosDB];
+    const combina2 = [...DatosApi,...DatosDB]
     // let a = DatosDB[0];
     // m a r ioasdoj;
     // console.log('aaaaaaaaaaaa',a)
+    // console.log(combina2.filter(a=>a.indb));
+    // console.log(combina2.filter(a=>!a.indb))
+
     const combinar = combina2;
+
+    const combinar3 = DatosApi.reduce((acumulador, valorActual) => {
+     return acumulador.concat(valorActual);
+     }, DatosDB);
+     
 
     const{name}= req.query;
                                          //toLowerCasePara no tener problemas con las mayusculas
@@ -114,11 +122,17 @@ router.get('/', async(req,res)=>{
 
 router.get('/:id', async(req,res)=>{
 const {id} = req.params;
-const datosAPI = await contenedorParaPerrosAPI();//Tomo los datos de la api
-const datosDB = await contenedorParaPerrosDB(); // TOMO LOS DATOS DE LA BASE DE DATOS
-const combinar = [...datosAPI,...datosDB]; //LOS UNO NUEVAMENTE
-const findDog = combinar.filter(a=> {return a.id == id});//VERIFICO QUE EXISTE CON UN FILTER
-findDog.length?res.send(findDog):res.send('error')//Si encuentro alguno lo mando como respuesta, sino aviso de que no existe.
+try{
+    const datosAPI = await contenedorParaPerrosAPI();//Tomo los datos de la api
+    const datosDB = await contenedorParaPerrosDB(); // TOMO LOS DATOS DE LA BASE DE DATOS
+    const combinar = [...datosAPI,...datosDB];
+    const findDog = combinar.find(a=> {return a.id == id});//VERIFICO QUE EXISTE CON UN FILTER
+    res.send(findDog)
+}
+catch{
+    res.send('error')//Si encuentro alguno lo mando como respuesta, sino aviso de que no existe.
+}
+
 })
 
 
@@ -147,6 +161,7 @@ let create = await Dog.create({
 // console.log(temperamentos.filter((temp)=>temp))
 // hasta aqui si envie un temperamento que no existe
 await temperamentos.forEach((temp)=>Temperaments.findOrCreate({where:{name:temp}})) // aqui lo crea y si lo encuentra entonces no hace nada
+
 
 
 //como ya lo cree antes me hace una relacion

@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination } from './Pagination';
 import styles from './modules/home.module.css';
-import loader from './modules/assets/loading2.gif'
+import { Loading } from './Loading';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -52,9 +52,10 @@ const Home = () => {
 
   const PerrosFiltradosActuales = byTemps.slice(inicio, ultimaPagina);
 
-  let Error = breeds.length && breeds !== 'error' ? !!breeds.filter(a => a.name.toLowerCase().includes(value.toLowerCase())).length : false; //Esto verifica el error de la busqueda en tiempo real, guardado para proxima implementacion del catch.
+  // let Error = breeds.length && breeds !== 'error' ? !!breeds.filter(a => a.name.toLowerCase().includes(value.toLowerCase())).length : false; //Esto verifica el error de la busqueda en tiempo real, guardado para proxima implementacion del catch.
 
 
+  
 
   const paginado = (pageNumber) => {//HANDLER PAGINADO
     setPagina(pageNumber)
@@ -92,18 +93,28 @@ const Home = () => {
 
   //------------------------------------------------------------------------------------------// 
   const Handler = (name) => {
+   
+    if(name===""){
+      dispatch(getBreed())
+    }
     SetValue(name);
+
   }
+
+  const submitSearh = () =>{
+      dispatch(searchDog(value));
+  }
+
   const handlerFilter = async (e) => {
     e.preventDefault();
-    await dispatch(sortByName(e.target.value));
+    dispatch(sortByName(e.target.value));
     setRender(render + 1)
   }
 
 
   const handlerWeight = async (e) => {
     e.preventDefault();
-    await dispatch(sortByWeight(e.target.value));
+    dispatch(sortByWeight(e.target.value));
     setRender(render + 1)
   }
 
@@ -112,6 +123,32 @@ const Home = () => {
     e.preventDefault(e);
     dispatch(filterByTemps(e.target.value))
     setRender(render + 1)
+  }
+
+  const handlePressKey = (e) =>{
+    if(e.key === 'Enter'){
+     dispatch( searchDog(value));
+     setPagina(1)
+    }
+
+  }
+
+  const apiOrDb = (e)=>{
+    console.log(e.target.value)
+  let apiOrDb= e.target.value;
+     setBreeds([]);
+
+  if(apiOrDb === 'API'){
+    dispatch(getBreed(apiOrDb));
+  };
+
+  if(apiOrDb === 'DB'){
+    dispatch(getBreed(apiOrDb));
+  };
+  if(apiOrDb === 'TODOS'){
+    setBreeds([]);
+    dispatch(getBreed());
+  }
   }
 
   //------------------------------------------------------------------------------------------------------------//
@@ -123,16 +160,13 @@ const Home = () => {
     e.preventDefault()
     setLoading(true);
     document.getElementsByName("inputName")[0].value = "";
-    await dispatch(filterByTemps('All'));
-    await dispatch(getBreed());
+    dispatch(filterByTemps('All'));
+    dispatch(getBreed());
     setReset(true);
     setBreeds(breed);
     setReset(false);
     setLoading(false);
   }
-
-
-
 
   //--------------------------------------------------------------------------------------------------------------
 
@@ -148,17 +182,15 @@ const Home = () => {
 
 
   // eslint-disable-next-line no-console
-  useEffect(() => {
+    useEffect(() => {
 
-      setLoading(true);
-      dispatch(searchDog(value));
-      // eslint-disable-next-line no-console
-      setBreeds(breed);
-      if (value.length === 0 && value.length !== "") {
-        setTemper([])
-      }
-      setLoading(false);
-  }, [dispatch, value]);
+        setLoading(true);
+        setBreeds(breed);
+        if (value.length === 0 || value.length !== "") {
+          setTemper([])
+        }
+        setLoading(false);
+    }, [dispatch]);
 
 
   useEffect(() => {
@@ -167,13 +199,9 @@ const Home = () => {
   }, [breed]);
 
   useEffect(() => {
-
-    setTemper(byTemps);
-    setPagina(1)
+  setTemper(byTemps);
+  setPagina(1)
   }, [byTemps])
-
-
-
 
 
   return (
@@ -207,12 +235,16 @@ const Home = () => {
                 </select>
               </label>
               <Link to={'/createdog'} className={styles.linkColor}><button className={styles.homeButton} >CreateBreed</button></Link>
+              <button value={'API'} onClick={e=>apiOrDb(e)}>API</button>
+              <button value={'DB'} onClick={e=>apiOrDb(e)} >DB</button>
+              <button value={'TODOS'} onClick={e=>apiOrDb(e)} >TODOS</button>
+              
               <button className={styles.homeButton} key={Math.random()} value={'A-Z'} onClick={handlerFilter}>A-Z</button>
               <button className={styles.homeButton} value={'Z-A'} onClick={handlerFilter}>Z-A</button>
               <button className={styles.homeButton} value={'Max-Min'} onClick={handlerWeight}>Max-min</button>
               <button className={styles.homeButton} value={'Min-Max'} onClick={handlerWeight}>Min-Max</button>
               <button className={styles.homeButton} onClick={resetFilters}>Reset Filters</button>
-              <input  name='inputName' onChange={e => Handler(e.target.value)}></input>
+              <input  name='inputName' onKeyPress={handlePressKey} onChange={e => Handler(e.target.value)}></input><button value={value}  onClick={()=>submitSearh()}>buscar</button>
               </div>
 
             </div>
@@ -222,9 +254,9 @@ const Home = () => {
             {
 
 
-              loading || !breed.length ? <> <div className={styles.loadingContainer}><img className={styles.loading} src={loader} alt='imagen no encontrada'></img><img className={styles.loading} src={loader} alt='imagen no encontrada'></img><img className={styles.loading} src={loader} alt='imagen no encontrada'></img></div></>
+              loading || !breed.length ? <Loading/>
 
-                : temper === 'Error' || Error === false ? <><h1>Creo que no podemos encontrar lo que buscas</h1></>
+                : temper === 'Error' || breed==='No' ? <><h1 className={styles.error}>Creo que no podemos encontrar lo que buscas</h1></>
 
                   : temper.length ?
 
@@ -239,8 +271,8 @@ const Home = () => {
                     }) //   Pude haber trabajado todo en un solo estado
 
 
-                    : breeds !== 'error' ?
-                      PerrosActuales.length && PerrosActuales.map((breed) => {
+                    :  breed !== 'error' ?
+                      PerrosActuales.map((breed) => {
                         return <DogCard key={breed.id}
                           id={breed.id}
                           name={breed.name}
@@ -249,11 +281,12 @@ const Home = () => {
                           image={breed.image}
                           temperament={breed.temperaments} />
                       })
+                     
 
 
 
-                      : value.length > 12 ? <><h1>{`Vaya, que nombre tan raro para un perrito.`}</h1></>
-                        : <><h1>{`¿Estas seguro de que se llama ${value}?`}</h1></>
+                      : value.length > 12 ? <><h1 className={styles.error}>{`Vaya, que nombre tan raro para un perrito.`}</h1></>
+                        : <><h1 className={styles.error}>{`¿Estas seguro de que se llama ${value}?`}</h1><br/></>
 
             }
 

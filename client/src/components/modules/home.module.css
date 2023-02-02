@@ -1,3 +1,7 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&family=Roboto+Condensed&family=Roboto:wght@100&display=swap');
+
+  
   .cardContent{
     justify-content:space-between;
     display:grid;
@@ -104,4 +108,19 @@
   .linkColor{
     padding: 0px;
     margin: 0px;
+  }
+
+
+  .error{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 5em;
+    font-family: 'Noto-Serif';
+    border-radius: 10%;
+    color: #ff5454;
+    height: 75vh;
+    width: 190vh;
+    background-color: rgba(255, 255, 255, 0.8);
   }
